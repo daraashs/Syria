@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>الحساب | شهداء ومفقودي حرب سوريا</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="/" data-i18n="nav.home">الرئيسية</a>
+  <span class="spacer"></span>
+  <select id="langSelect" aria-label="Language">
+    <option value="ar">العربية</option>
+    <option value="en">English</option>
+  </select>
+</nav>
+
+<main>
+  <!-- تسجيل الدخول -->
+  <section class="panel" id="loginPanel" hidden>
+    <h2 data-i18n="auth.login_title">تسجيل الدخول</h2>
+    <form id="loginForm" class="form">
+      <label class="full"><span data-i18n="auth.email">البريد الإلكتروني</span>
+        <input type="email" name="email" required autocomplete="email">
+      </label>
+      <label class="full"><span data-i18n="auth.password">كلمة المرور</span>
+        <input type="password" name="password" required autocomplete="current-password">
+      </label>
+      <div class="actions">
+        <button type="submit" data-i18n="auth.btn_login">دخول</button>
+        <button type="button" class="ghost" data-go="forgot" data-i18n="auth.forgot_link">نسيت كلمة المرور؟</button>
+        <button type="button" class="ghost" data-go="register" data-i18n="auth.to_register">ليس لديك حساب؟ أنشئ حساباً</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- إنشاء حساب -->
+  <section class="panel" id="registerPanel" hidden>
+    <h2 data-i18n="auth.register_title">إنشاء حساب</h2>
+    <form id="registerForm" class="form">
+      <label class="full"><span data-i18n="auth.name">الاسم الذي يظهر على حسابك</span>
+        <input name="display_name" required minlength="2" maxlength="80">
+      </label>
+      <label class="full"><span data-i18n="auth.email">البريد الإلكتروني</span>
+        <input type="email" name="email" required autocomplete="email">
+      </label>
+      <label class="full"><span data-i18n="auth.password">كلمة المرور</span>
+        <input type="password" name="password" required minlength="8" autocomplete="new-password">
+      </label>
+      <div class="actions">
+        <button type="submit" data-i18n="auth.btn_register">إنشاء الحساب</button>
+        <button type="button" class="ghost" data-go="login" data-i18n="auth.to_login">لديك حساب؟ سجّل الدخول</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- تأكيد البريد -->
+  <section class="panel" id="verifyPanel" hidden>
+    <h2 data-i18n="auth.verify_title">تأكيد البريد الإلكتروني</h2>
+    <p class="note" id="verifyNote"></p>
+    <form id="verifyForm" class="form">
+      <label class="full"><span data-i18n="auth.code">رمز التحقق (6 أرقام)</span>
+        <input name="code" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code">
+      </label>
+      <div class="actions">
+        <button type="submit" data-i18n="auth.btn_verify">تأكيد</button>
+        <button type="button" class="ghost" id="resendBtn" data-i18n="auth.resend">إعادة إرسال الرمز</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- نسيت كلمة المرور -->
+  <section class="panel" id="forgotPanel" hidden>
+    <h2 data-i18n="auth.forgot_title">استعادة كلمة المرور</h2>
+    <form id="forgotForm" class="form">
+      <label class="full"><span data-i18n="auth.email">البريد الإلكتروني</span>
+        <input type="email" name="email" required autocomplete="email">
+      </label>
+      <div class="actions">
+        <button type="submit" data-i18n="auth.btn_forgot">إرسال الرمز</button>
+        <button type="button" class="ghost" data-go="login" data-i18n="auth.to_login">لديك حساب؟ سجّل الدخول</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- كلمة مرور جديدة -->
+  <section class="panel" id="resetPanel" hidden>
+    <h2 data-i18n="auth.reset_title">كلمة مرور جديدة</h2>
+    <form id="resetForm" class="form">
+      <label class="full"><span data-i18n="auth.code">رمز التحقق (6 أرقام)</span>
+        <input name="code" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6">
+      </label>
+      <label class="full"><span data-i18n="auth.new_password">كلمة المرور الجديدة</span>
+        <input type="password" name="password" required minlength="8" autocomplete="new-password">
+      </label>
+      <div class="actions">
+        <button type="submit" data-i18n="auth.btn_reset">تغيير كلمة المرور</button>
+      </div>
+    </form>
+  </section>
+
+  <div id="authMsg" class="msg" hidden></div>
+</main>
+
+<script src="/js/i18n.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/auth.js"></script>
+</body>
+</html>
