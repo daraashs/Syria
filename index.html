@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>شهداء ومفقودي حرب سوريا</title>
+  <meta name="description" content="سجل توثيقي عام لشهداء ومفقودي ومعتقلي حرب سوريا">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="/" data-i18n="nav.home">الرئيسية</a>
+  <a href="/auth.html" data-show="guest" data-i18n="nav.login">تسجيل الدخول</a>
+  <a href="/auth.html#register" data-show="guest" data-i18n="nav.register">إنشاء حساب</a>
+  <a href="/profile.html" data-show="user" data-i18n="nav.profile">ملفي الشخصي</a>
+  <a href="/admin.html" data-show="admin" data-i18n="nav.admin">الإشراف</a>
+  <span class="spacer"></span>
+  <span class="who" id="navName" data-show="user"></span>
+  <button class="ghost" id="logoutBtn" data-show="user" data-i18n="nav.logout">خروج</button>
+  <select id="langSelect" aria-label="Language">
+    <option value="ar">العربية</option>
+    <option value="en">English</option>
+  </select>
+</nav>
+
+<header class="top">
+  <h1 data-i18n="app.title">شهداء ومفقودي حرب سوريا</h1>
+</header>
+
+<main>
+  <section class="banner" id="siteBanner" aria-live="polite"></section>
+
+  <section class="counters" aria-label="Statistics">
+    <div class="card"><span id="cnt-martyr">0</span><label data-i18n="stats.martyr">الشهداء</label></div>
+    <div class="card"><span id="cnt-missing">0</span><label data-i18n="stats.missing">المفقودون</label></div>
+    <div class="card"><span id="cnt-detainee">0</span><label data-i18n="stats.detainee">المعتقلون</label></div>
+    <div class="card small"><span id="cnt-released">0</span><label data-i18n="stats.released">معتقلون مُفرج عنهم</label></div>
+    <div class="card small"><span id="cnt-detained-missing">0</span><label data-i18n="stats.detained_missing">مفقودون من المعتقلين</label></div>
+  </section>
+
+  <nav class="tabs">
+    <button class="tab active" data-cat="martyr" data-i18n="tab.martyr">الشهداء</button>
+    <button class="tab" data-cat="missing" data-i18n="tab.missing">المفقودون</button>
+    <button class="tab" data-cat="detainee" data-i18n="tab.detainee">المعتقلون</button>
+    <button class="tab accent" id="openRegister" data-i18n="tab.register">+ تسجيل حالة</button>
+  </nav>
+
+  <section>
+    <form id="searchForm" class="search">
+      <label><span data-i18n="search.name">الاسم</span>
+        <input name="q" data-i18n-ph="search.name_ph" placeholder="الاسم كاملاً أو جزء منه">
+      </label>
+      <label><span data-i18n="search.place">المكان</span>
+        <input name="place" data-i18n-ph="search.place_ph" placeholder="مدينة أو منطقة أو مكان الاحتجاز">
+      </label>
+      <label><span data-i18n="search.governorate">المحافظة</span>
+        <select name="governorate" id="govFilter">
+          <option value="" data-i18n="search.all_gov">كل المحافظات</option>
+        </select>
+      </label>
+      <label><span data-i18n="search.from">من تاريخ</span>
+        <input type="date" name="from">
+      </label>
+      <label><span data-i18n="search.to">إلى تاريخ</span>
+        <input type="date" name="to">
+      </label>
+      <label id="statusFilter" hidden><span data-i18n="search.status">الحالة</span>
+        <select name="status">
+          <option value="" data-i18n="search.all">الكل</option>
+          <option value="released" data-i18n="status.released">مُفرج عنه</option>
+          <option value="missing" data-i18n="status.missing">مفقود</option>
+        </select>
+      </label>
+      <div class="row-btns">
+        <button type="submit" data-i18n="search.submit">بحث</button>
+        <button type="button" class="ghost" id="resetBtn" data-i18n="search.reset">مسح</button>
+        <button type="button" class="ghost" id="exportBtn" data-i18n="search.export">تصدير CSV</button>
+      </div>
+    </form>
+
+    <p class="count" id="resultCount"></p>
+    <div id="results" class="grid"></div>
+
+    <div class="pager">
+      <button class="ghost" id="prev" data-i18n="search.prev">السابق</button>
+      <span id="pageInfo"></span>
+      <button class="ghost" id="next" data-i18n="search.next">التالي</button>
+    </div>
+  </section>
+
+  <section class="panel" id="registerSection" hidden>
+    <h2 data-i18n="reg.title">تسجيل حالة</h2>
+
+    <div data-show="guest">
+      <p class="note" data-i18n="reg.need_login">لتسجيل حالة يجب إنشاء حساب وتأكيد بريدك الإلكتروني.</p>
+      <a href="/auth.html#register" data-i18n="nav.register">إنشاء حساب</a>
+    </div>
+
+    <div data-show="user">
+      <p class="note" data-i18n="reg.note">يُكتب الاسم الكامل مرة واحدة لكل حساب في كل فئة.</p>
+      <form id="registerForm" class="form">
+        <label><span data-i18n="reg.category">الفئة</span>
+          <select name="category" id="regCategory">
+            <option value="martyr" data-i18n="cat.martyr">شهيد</option>
+            <option value="missing" data-i18n="cat.missing">مفقود</option>
+            <option value="detainee" data-i18n="cat.detainee">معتقل</option>
+          </select>
+        </label>
+
+        <fieldset id="statusBox" hidden>
+          <legend data-i18n="reg.detainee_status">حالة المعتقل</legend>
+          <label class="radio"><input type="radio" name="status" value="released"> <span data-i18n="reg.released">مُفرج عنه</span></label>
+          <label class="radio"><input type="radio" name="status" value="missing"> <span data-i18n="reg.missing">مفقود</span></label>
+        </fieldset>
+
+        <label class="full"><span data-i18n="reg.name">الاسم الكامل</span>
+          <input name="full_name" maxlength="120" required data-i18n-ph="reg.name_ph" placeholder="الاسم الثلاثي على الأقل">
+        </label>
+
+        <label><span id="dateText" data-i18n="date.martyr">تاريخ الاستشهاد</span>
+          <input type="date" name="event_date" id="regDate" required>
+        </label>
+
+        <label><span data-i18n="reg.gov">المحافظة</span>
+          <select name="governorate" id="regGov" required>
+            <option value="" data-i18n="reg.select_gov">اختر المحافظة</option>
+          </select>
+        </label>
+
+        <label><span data-i18n="field.city">المدينة</span>
+          <input name="city" maxlength="80">
+        </label>
+
+        <label><span data-i18n="field.area">المنطقة</span>
+          <input name="area" maxlength="80">
+        </label>
+
+        <label class="full" id="detentionBox" hidden><span data-i18n="field.detention">مكان الاحتجاز</span>
+          <input name="place_of_detention" maxlength="160" data-i18n-ph="reg.detention_ph" placeholder="اسم السجن أو الفرع">
+        </label>
+
+        <label class="full"><span data-i18n="reg.notes">ملاحظات</span>
+          <textarea name="notes" rows="3" maxlength="500"></textarea>
+        </label>
+
+        <label><span data-i18n="reg.contact">وسيلة تواصل (اختياري، لا تظهر للعامة)</span>
+          <input name="contact" maxlength="120">
+        </label>
+
+        <label><span data-i18n="reg.photo">صورة مصغرة (اختياري)</span>
+          <input type="file" id="photoInput" accept="image/*">
+          <img id="photoPreview" class="preview" alt="" hidden>
+          <button type="button" class="ghost" id="removePhoto" data-i18n="reg.remove_photo" hidden>إزالة الصورة</button>
+        </label>
+
+        <label class="check full">
+          <input type="checkbox" name="consent" required>
+          <span data-i18n="reg.consent">أؤكد أن المعلومات المكتوبة صحيحة حسب علمي</span>
+        </label>
+
+        <div class="actions">
+          <button type="submit" data-i18n="reg.submit">إرسال للمراجعة</button>
+          <button type="button" class="ghost" id="closeRegister" data-i18n="reg.close">إغلاق</button>
+        </div>
+        <div id="formMsg" class="msg" hidden></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer data-i18n="footer.text">منصة توثيقية مستقلة.</footer>
+
+<script src="/js/i18n.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/index.js"></script>
+</body>
+  </html>
