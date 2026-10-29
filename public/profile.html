@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ملفي الشخصي | شهداء ومفقودي حرب سوريا</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="/" data-i18n="nav.home">الرئيسية</a>
+  <a href="/profile.html" data-i18n="nav.profile">ملفي الشخصي</a>
+  <a href="/admin.html" data-show="admin" data-i18n="nav.admin">الإشراف</a>
+  <span class="spacer"></span>
+  <span class="who" id="navName"></span>
+  <button class="ghost" id="logoutBtn" data-i18n="nav.logout">خروج</button>
+  <select id="langSelect" aria-label="Language">
+    <option value="ar">العربية</option>
+    <option value="en">English</option>
+  </select>
+</nav>
+
+<main>
+  <section class="panel">
+    <h2 data-i18n="prof.title">ملفي الشخصي</h2>
+    <form id="profileForm" class="form">
+      <label class="full"><span data-i18n="prof.email">البريد الإلكتروني (لا يمكن تغييره هنا)</span>
+        <input id="email" disabled>
+      </label>
+      <label class="full"><span data-i18n="prof.name">الاسم</span>
+        <input name="display_name" maxlength="80" required minlength="2">
+      </label>
+      <label class="full"><span data-i18n="prof.bio">نبذة عنك أو عن جهتك</span>
+        <textarea name="bio" rows="3" maxlength="300"></textarea>
+      </label>
+
+      <label><span data-i18n="prof.avatar">الصورة الشخصية</span>
+        <input type="file" accept="image/*" data-field="avatar">
+        <img id="avatarPreview" class="preview" alt="" hidden>
+        <button type="button" class="ghost" data-remove="avatar" data-i18n="prof.remove">إزالة</button>
+      </label>
+
+      <label><span data-i18n="prof.logo">شعار (اختياري)</span>
+        <input type="file" accept="image/*" data-field="logo">
+        <img id="logoPreview" class="preview" alt="" hidden>
+        <button type="button" class="ghost" data-remove="logo" data-i18n="prof.remove">إزالة</button>
+      </label>
+
+      <label class="full"><span data-i18n="prof.lang">لغة الواجهة</span>
+        <select name="lang">
+          <option value="ar">العربية</option>
+          <option value="en">English</option>
+        </select>
+      </label>
+
+      <div class="actions">
+        <button type="submit" data-i18n="prof.save">حفظ التغييرات</button>
+      </div>
+      <div id="profileMsg" class="msg" hidden></div>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2 data-i18n="prof.pw_title">تغيير كلمة المرور</h2>
+    <form id="passwordForm" class="form">
+      <label class="full"><span data-i18n="prof.pw_current">كلمة المرور الحالية</span>
+        <input type="password" name="current" required autocomplete="current-password">
+      </label>
+      <label class="full"><span data-i18n="prof.pw_new">كلمة المرور الجديدة</span>
+        <input type="password" name="password" required minlength="8" autocomplete="new-password">
+      </label>
+      <div class="actions">
+        <button type="submit" data-i18n="prof.pw_btn">تغيير</button>
+      </div>
+      <div id="pwMsg" class="msg" hidden></div>
+    </form>
+  </section>
+</main>
+
+<script src="/js/i18n.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/profile.js"></script>
+</body>
+</html>
