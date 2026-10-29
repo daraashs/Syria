@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>لوحة الإشراف | شهداء ومفقودي حرب سوريا</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="/" data-i18n="nav.home">الرئيسية</a>
+  <a href="/profile.html" data-show="user" data-i18n="nav.profile">ملفي الشخصي</a>
+  <span class="spacer"></span>
+  <span class="who" id="navName" data-show="user"></span>
+  <button class="ghost" id="logoutBtn" data-show="user" data-i18n="nav.logout">خروج</button>
+  <a href="/auth.html" data-show="guest" data-i18n="adm.login_link">تسجيل الدخول</a>
+  <select id="langSelect" aria-label="Language">
+    <option value="ar">العربية</option>
+    <option value="en">English</option>
+  </select>
+</nav>
+
+<main>
+  <section class="panel" id="denied" hidden>
+    <p data-i18n="adm.need_admin">هذه الصفحة للمشرفين فقط.</p>
+  </section>
+
+  <section id="adminPanel" hidden>
+    <h1 data-i18n="adm.title">لوحة الإشراف</h1>
+
+    <nav class="tabs-admin" id="tabs">
+      <button class="tab active" data-tab="pending" data-i18n="adm.tab_pending">بانتظار المراجعة</button>
+      <button class="tab" data-tab="approved" data-i18n="adm.tab_approved">معتمدة</button>
+      <button class="tab" data-tab="rejected" data-i18n="adm.tab_rejected">مرفوضة</button>
+      <button class="tab" data-tab="merged" data-i18n="adm.tab_merged">مدموجة</button>
+      <button class="tab" data-tab="dups" data-i18n="adm.tab_dups">التكرارات</button>
+      <button class="tab" data-tab="users" data-i18n="adm.tab_users">المستخدمون</button>
+      <button class="tab" data-tab="settings" data-i18n="adm.tab_settings">مربع الترحيب</button>
+      <button class="tab" data-tab="export" data-i18n="adm.tab_export">تصدير CSV</button>
+    </nav>
+
+    <!-- قوائم السجلات -->
+    <div id="recordsPanel">
+      <div id="list"></div>
+    </div>
+
+    <!-- التكرارات -->
+    <div id="dupsPanel" hidden>
+      <div class="bar">
+        <label><span data-i18n="adm.dup_cat">الفئة</span>
+          <select id="dupCat">
+            <option value="martyr" data-i18n="cat.martyr">شهيد</option>
+            <option value="missing" data-i18n="cat.missing">مفقود</option>
+            <option value="detainee" data-i18n="cat.detainee">معتقل</option>
+          </select>
+        </label>
+        <button id="dupBtn" data-i18n="adm.show">عرض</button>
+      </div>
+      <div id="dups"></div>
+    </div>
+
+    <!-- المستخدمون -->
+    <div id="usersPanel" hidden>
+      <div class="bar">
+        <input id="userQuery" data-i18n-ph="adm.search_users" placeholder="بحث بالاسم أو البريد">
+        <button id="userBtn" data-i18n="adm.show">عرض</button>
+      </div>
+      <div id="users"></div>
+    </div>
+
+    <!-- مربع الترحيب -->
+    <div id="settingsPanel" hidden class="panel">
+      <p class="note" data-i18n="adm.banner_hint">يظهر هذا النص في مربع أعلى الصفحة الرئيسية.</p>
+      <form id="bannerForm" class="form">
+        <label class="full">
+          <textarea id="bannerText" rows="8" maxlength="2000"></textarea>
+        </label>
+        <div class="actions">
+          <button type="submit" data-i18n="adm.save">حفظ</button>
+        </div>
+        <div id="bannerMsg" class="msg" hidden></div>
+      </form>
+    </div>
+
+    <!-- تصدير -->
+    <div id="exportPanel" hidden class="panel">
+      <form id="exportForm" class="form">
+        <label><span data-i18n="adm.export_cat">الفئة</span>
+          <select name="category">
+            <option value="" data-i18n="adm.all">الكل</option>
+            <option value="martyr" data-i18n="cat.martyr">شهيد</option>
+            <option value="missing" data-i18n="cat.missing">مفقود</option>
+            <option value="detainee" data-i18n="cat.detainee">معتقل</option>
+          </select>
+        </label>
+        <label><span data-i18n="adm.export_review">حالة المراجعة</span>
+          <select name="review">
+            <option value="" data-i18n="adm.all">الكل</option>
+            <option value="pending" data-i18n="adm.tab_pending">بانتظار المراجعة</option>
+            <option value="approved" data-i18n="adm.tab_approved">معتمدة</option>
+            <option value="rejected" data-i18n="adm.tab_rejected">مرفوضة</option>
+            <option value="merged" data-i18n="adm.tab_merged">مدموجة</option>
+          </select>
+        </label>
+        <label><span data-i18n="adm.export_status">حالة المعتقل</span>
+          <select name="status">
+            <option value="" data-i18n="adm.all">الكل</option>
+            <option value="released" data-i18n="status.released">مُفرج عنه</option>
+            <option value="missing" data-i18n="status.missing">مفقود</option>
+          </select>
+        </label>
+        <label><span data-i18n="adm.export_lang">لغة الملف</span>
+          <select name="lang">
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+          </select>
+        </label>
+        <div class="actions">
+          <button type="submit" data-i18n="adm.export_btn">تنزيل CSV</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<script src="/js/i18n.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>
